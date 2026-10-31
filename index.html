@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111033">
+
+<title>Birthday Surprise 🍓🫐</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+<!-- Tap once to enter the surprise and allow browser audio playback. -->
+<div id="surpriseStartOverlay" class="surprise-start-overlay" role="dialog" aria-modal="true" aria-labelledby="surpriseStartTitle">
+  <div class="surprise-start-card">
+    <div class="surprise-start-emoji" aria-hidden="true">🎁✨🎂</div>
+    <h1 id="surpriseStartTitle">A Little Surprise for You</h1>
+    <p>Tap below to open your birthday surprise with music. 💖</p>
+    <button id="openSurpriseButton" class="surprise-start-button" type="button">Open Your Surprise 🎁</button>
+    <small>Turn your volume up for the music 🎵</small>
+  </div>
+</div>
+
+<!-- Background / playlist audio: place November-Angel-Short.mp3 in assets/. The same audio element powers the playlist. -->
+<audio id="backgroundMusic" src="assets/November-Angel-Short.mp3" preload="auto" autoplay playsinline></audio>
+<button id="musicToggle" class="music-toggle" type="button" aria-label="Play background music" aria-pressed="false">♫ Music: Off</button>
+
+
+
+<!-- =====================================================
+     STARS
+===================================================== -->
+
+<div
+    class="stars"
+    id="stars">
+</div>
+
+
+<!-- =====================================================
+     PAGE 1
+     CANDLES
+===================================================== -->
+
+<section
+    id="candleScreen"
+    class="screen"
+>
+
+    <div class="sky-lantern-field" id="skyLanterns" aria-hidden="true"></div>
+
+    <div class="fruit-row">
+        🍓 🫐 🍓
+    </div>
+
+    <h1 class="title">
+        Oru Kutty Surprise ✨
+    </h1>
+
+    <p class="sub">
+        Three candles are waiting...<br>
+        Tap each candle to blow it out. 🕯️
+    </p>
+
+    <p class="flavor">
+        A sweet strawberry & blueberry surprise is waiting! 🍓🫐
+    </p>
+
+    <div
+        class="candles"
+        id="candles"
+    ></div>
+
+    <div class="cakebody">
+        <div class="cream"></div>
+    </div>
+    <div class="cakeplate"></div>
+
+    <div class="candle-bear-play" id="candleBearPlay" aria-label="Berry bears playing around the birthday cake">
+      <div class="berry-bear strawberry-bear" id="strawberryBearPlay" aria-label="Strawberry bear walking" role="img">🍓🐻<span>strawberry bear</span></div>
+      <div class="berry-bear blueberry-bear" id="blueberryBearPlay" aria-label="Blueberry bear walking" role="img">🫐🐻<span>blueberry bear</span></div>
+      <p class="bear-play-hint">Berry bears taking a little stroll ✨</p>
+    </div>
+
+    <p
+        class="tap"
+        id="counter"
+    >
+        0 / 3 candles blown
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     PAGE 2
+     BIRTHDAY
+===================================================== -->
+
+<section
+    id="birthdayScreen"
+    class="screen hidden birthday"
+>
+
+    <div class="fruit-row">
+        🍓 🫐 🍓 🫐 🍓
+    </div>
+
+    <div style="font-size:80px">
+        🎂
+    </div>
+
+    <p class="sub">
+
+        Candles lam anachitiya...
+        now the real surprise begins Thangoo! 💖
+
+    </p>
+
+    <h1
+        class="title"
+        id="birthdayTitle"
+    >
+        Happy Birthday Aashu! 💖
+    </h1>
+
+    <p class="sub">
+
+        Wishing you a day full of
+        smiles, love, memories and magic. ✨
+
+    </p>
+
+    <p class="flavor">
+
+        Eppovum Sweet like Strawberries,
+        magical like Blueberries Ah irukanum! 🍓🫐
+
+    </p>
+
+    <button onclick="openMiniGame()" class="mini-game-launch">🎮 Oru Kutty Game</button>
+
+
+</section>
+
+<!-- FRUIT CATCHING MINI GAME -->
+<section id="miniGameScreen" class="mini-game-screen fruit-game hidden" aria-label="Catch the berries game">
+  <p class="mini-game-kicker">Oru Kutty birthday game ✨</p>
+  <h1 class="mini-game-title">Berry Basket 🍓🫐</h1>
+  <p class="mini-game-subtitle">Move the basket with your finger and catch 10 berries to unlock your letter.</p>
+  <div class="mini-game-arena berry-arena" id="miniGameArena" aria-label="Fruit catching play area">
+    <div class="game-moon" aria-hidden="true">✦</div>
+    <div class="basket" id="fruitBasket" role="img" tabindex="0" aria-label="Basket. Use your finger or arrow keys to move it"><span>🧺</span></div>
+  </div>
+  <p class="mini-game-score" aria-live="polite">Berries caught: <span id="miniGameCount">0</span> / 10</p>
+  <p id="miniGameMessage" class="mini-game-message">Drag the basket or move your finger to catch them! 💗</p>
+  <div class="mini-game-actions">
+    <button type="button" onclick="resetMiniGame()">↻ Play again</button>
+    <button type="button" onclick="closeMiniGame()">← Back to birthday</button>
+  </div>
+  <div id="envelopeReveal" class="envelope-reveal hidden">
+    <p class="envelope-caption">Nice catch di! Oru Letter Unakaga vachi Iruken💌</p>
+    <button id="floatingEnvelope" class="floating-envelope" type="button" onclick="openGameLetter()" aria-label="Open your birthday letter">
+      <span class="envelope-heart">♥</span><span class="envelope-flap"></span>
+    </button>
+    <p class="envelope-hint">Tap the glowing envelope</p>
+  </div>
+</section>
+
+
+<!-- =====================================================
+     SECRET BLUEBERRY SCENE — optional bonus scene
+===================================================== -->
+<section id="blueberryScreen" class="blueberry-screen hidden" aria-label="Blueberry secret">
+  <div class="blueberry-sparkles" aria-hidden="true">✦　·　✧　　✦　·　✧</div>
+  <p class="blueberry-kicker">Oru Kutty secret for you</p>
+  <h1 class="blueberry-title">Tap the blueberry 🫐</h1>
+  <p class="blueberry-subtitle">Five little taps unlock your letter.</p>
+  <button id="blueberryTap" class="blueberry-button" type="button" onclick="tapBlueberry()" aria-label="Tap blueberry">
+    <span class="blueberry-fruit" aria-hidden="true">🫐</span>
+    <span class="blueberry-tap-hint">tap me!</span>
+  </button>
+  <div class="blueberry-progress" aria-live="polite">
+    <span id="blueberryCount">0</span><span class="blueberry-slash">/</span><span>5</span>
+  </div>
+  <div class="blueberry-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <p id="blueberryMessage" class="blueberry-message" aria-live="polite">A little surprise is hiding here 💙</p>
+</section>
+
+
+<!-- =====================================================
+     PAGE 3
+     FULL SCREEN LETTER
+===================================================== -->
+
+<section
+    id="letterScreen"
+    class="letter-screen hidden"
+>
+
+    <!-- CSS/SVG bears: self-contained, no external images -->
+    <svg class="bear-symbols" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <symbol id="strawberryBear" viewBox="0 0 120 130">
+          <g stroke="#a95882" stroke-width="2.3" stroke-linejoin="round">
+            <circle cx="27" cy="30" r="17" fill="#ff9fc5"/><circle cx="93" cy="30" r="17" fill="#ff9fc5"/>
+            <circle cx="27" cy="30" r="8" fill="#ffd9e9"/><circle cx="93" cy="30" r="8" fill="#ffd9e9"/>
+            <ellipse cx="60" cy="98" rx="39" ry="29" fill="#ffa7c9"/>
+            <circle cx="60" cy="52" r="43" fill="#ffadd0"/>
+            <ellipse cx="60" cy="68" rx="20" ry="15" fill="#ffe5ed" stroke="none"/>
+            <circle cx="46" cy="51" r="3.8" fill="#57334d" stroke="none"/><circle cx="74" cy="51" r="3.8" fill="#57334d" stroke="none"/>
+            <path d="M56 65 Q60 70 64 65" fill="none" stroke="#6c3d52" stroke-width="2.2" stroke-linecap="round"/>
+            <ellipse cx="60" cy="61" rx="4" ry="3" fill="#8b5268" stroke="none"/>
+            <ellipse cx="36" cy="64" rx="8" ry="4" fill="#ff7da5" stroke="none" opacity=".65"/><ellipse cx="84" cy="64" rx="8" ry="4" fill="#ff7da5" stroke="none" opacity=".65"/>
+            <ellipse cx="27" cy="105" rx="14" ry="10" fill="#ffa7c9"/><ellipse cx="93" cy="105" rx="14" ry="10" fill="#ffa7c9"/>
+            <path d="M60 85 C41 70 36 98 60 117 C84 98 79 70 60 85Z" fill="#f14866" stroke="#b82d4b"/>
+            <path d="M47 84 Q60 69 73 84 L64 83 L60 89 L55 83Z" fill="#53ad69" stroke="#438654"/>
+            <g fill="#ffe9a3" stroke="none"><circle cx="52" cy="94" r="1.5"/><circle cx="67" cy="94" r="1.5"/><circle cx="60" cy="103" r="1.5"/></g>
+            <ellipse cx="38" cy="91" rx="12" ry="9" fill="#ffb5d2"/><ellipse cx="82" cy="91" rx="12" ry="9" fill="#ffb5d2"/>
+          </g>
+        </symbol>
+        <symbol id="blueberryBear" viewBox="0 0 120 130">
+          <g stroke="#647bb4" stroke-width="2.3" stroke-linejoin="round">
+            <circle cx="27" cy="30" r="17" fill="#91b7f7"/><circle cx="93" cy="30" r="17" fill="#91b7f7"/>
+            <circle cx="27" cy="30" r="8" fill="#c9e2ff"/><circle cx="93" cy="30" r="8" fill="#c9e2ff"/>
+            <ellipse cx="60" cy="98" rx="39" ry="29" fill="#9ec4ff"/>
+            <circle cx="60" cy="52" r="43" fill="#a9ceff"/>
+            <ellipse cx="60" cy="68" rx="20" ry="15" fill="#e5f1ff" stroke="none"/>
+            <circle cx="46" cy="51" r="3.8" fill="#354d77" stroke="none"/><circle cx="74" cy="51" r="3.8" fill="#354d77" stroke="none"/>
+            <path d="M56 65 Q60 70 64 65" fill="none" stroke="#465a85" stroke-width="2.2" stroke-linecap="round"/>
+            <ellipse cx="60" cy="61" rx="4" ry="3" fill="#586c9b" stroke="none"/>
+            <ellipse cx="36" cy="64" rx="8" ry="4" fill="#f2a4ca" stroke="none" opacity=".65"/><ellipse cx="84" cy="64" rx="8" ry="4" fill="#f2a4ca" stroke="none" opacity=".65"/>
+            <ellipse cx="27" cy="105" rx="14" ry="10" fill="#9ec4ff"/><ellipse cx="93" cy="105" rx="14" ry="10" fill="#9ec4ff"/>
+            <circle cx="60" cy="98" r="18" fill="#667bc5" stroke="#4a5da6"/>
+            <path d="M53 82 L57 88 L60 82 L63 88 L67 82" fill="none" stroke="#b5c9ff" stroke-width="3"/>
+            <circle cx="53" cy="97" r="3" fill="#a6bbf7" stroke="none"/>
+            <ellipse cx="38" cy="91" rx="12" ry="9" fill="#b6d6ff"/><ellipse cx="82" cy="91" rx="12" ry="9" fill="#b6d6ff"/>
+          </g>
+        </symbol>
+      </defs>
+    </svg>
+    <div class="letter-fruit-scatter bear-scatter" aria-hidden="true">
+      <svg class="fruit bear f1" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f2" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f3" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f4" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f5" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f6" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f7" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f8" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f9" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f10" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f11" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f12" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f13" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f14" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f15" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f16" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f17" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f18" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f19" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f20" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f21" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f22" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f23" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f24" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f25" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f26" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+      <svg class="fruit bear f27" viewBox="0 0 120 130"><use href="#strawberryBear"/></svg>
+      <svg class="fruit bear f28" viewBox="0 0 120 130"><use href="#blueberryBear"/></svg>
+    </div>
+
+    <div class="letter-content">
+
+        <div class="letter-fruits">
+
+            🍓 🫐 🍓 🫐 🍓
+
+        </div>
+
+
+        <h1 id="letterTitle" tabindex="-1">
+            Wishes For My Bujji ❤️
+        </h1>
+
+
+        <div class="letter-box">
+
+
+            <!-- =================================================
+                 💌 EDIT YOUR LETTER HERE
+
+                 Change the text below.
+
+                 DO NOT DELETE:
+                 <span id="letterName"></span>
+
+                 because it automatically shows
+                 the birthday person's name.
+            ================================================= -->
+
+            <div
+                class="letter-text"
+                id="letterText"
+            >
+
+Oii <span id="letterName"></span>,
+
+
+Happy Birthday Di My Aashu💕,
+
+Many More Happy Returns of the Day di Aashu 💖,
+Innaiku Unnoda 16th Birthday da So Happy ah iru😎, 
+Iniya Pirandha Naal Valthukkal di Thango 💕,
+
+Kalai la Nalla ah Kulichitu Sami kummudu🙂 ,
+Cake 🍰 ah Vettum bodhu Video eduthu Enakum Kaatu Seriya ,
+
+
+Un Life la Endha Kastamum varama iruka Enoda Valthukkal Da,
+Eppovum Happy ah irukanum Seriya😉 ,
+Nee Evlo Kasta Patrupa nu En-ah la Full ah Purinjika Mudiyadhu ,
+But Na Un Edathula irundhu Feel Panna Try pannuven ,
+
+Ellarukum Avanga avanga Vazhkai la Kastam irukum, 
+Namma adha Purinjiakanum seriya Ma😊, 
+Kastam ah Tha Nenaicha dha Kavalaya irukum , 
+
+Namma Life konja Naal dha ,
+So Irukura life ah namaku Pudicha maari Vazhanum Seriya Bujji😊, 
+
+Nee Un Life la Innum Neraiya Nalla Nalla
+Movements ah Paakanum nu Kadavul ta Na Vendikuren 😄,
+
+Indha Ulagathula Unaku nu Yarume illa nu Yosikadha , 
+Ellarum Unkoda Dha Irukom ,Yarume Illa nu Yosichana, 
+Na Irupen di Unakaga Thango 💕 
+
+Enna Help venum Nalum Enta kelu thayangama , 
+Na ennaah la enna Mudiyumo adha kandi pa Pannuven Seriya da 😊,
+
+Unmaiya Anbu na Enna nu Nee enaku Kaatuna , 
+Ennoda Bad Times La Aarudhal ah Irundha😊 ,
+Unna Life Meet Pannadhuku Naan Kuduthu Vachirukanum, 
+Unna enna ku Romba pudikum, Eppovum Pudikum (Forever🫂)
+
+Angels 😇 Irukuradhu Unmai Na ,
+En Vazhkai la Neeyum Oru Angel dha Di💖 
+
+
+And Again Wish You Happy Birthday Di Aashu💖,
+
+            </div>
+
+
+            <!-- =================================================
+                 ✍️ EDIT YOUR SIGNATURE HERE
+            ================================================= -->
+
+            <div class="letter-signature">
+
+                Your Blueberrry,<br>
+
+                <span id="signatureName">
+                    Mugi ❤️
+                </span>
+
+            </div>
+
+ 
+        </div>
+
+        <button type="button" class="open-music-page" onclick="openMusicPage()">
+            🎧 Unakaga Songs Vachi Iruken Di ❤️
+        </button>
+
+        <button onclick="backToBirthday()">
+
+            ← Back to Birthday
+
+        </button>
+
+
+    </div>
+
+</section>
+
+<!-- SEPARATE MUSIC PLAYLIST PAGE -->
+<section id="musicPage" class="music-page hidden" aria-label="Birthday music playlist" aria-hidden="true">
+  <div class="music-page-inner">
+    <button type="button" class="music-back-button" onclick="closeMusicPage()">← Back to Letter</button>
+            <section class="music-gift" id="musicGift" aria-label="Personal birthday music playlist">
+          <p class="music-gift-kicker">ORU KUTTY MUSIC GIFT 🎧</p>
+          <h2 class="music-gift-title">Exclusively for My <span id="musicRecipientName">Aashu 💖</span></h2>
+          <p class="music-gift-note">Every song has a little piece of my heart. ✨</p>
+          <div class="music-player-shell">
+            <div class="music-now-playing">
+              <div class="music-art" aria-hidden="true"><img id="playlistNowCover" src="assets/covers/November-Angel-Short.jpg" alt="November Angel cover"><i>✦</i></div>
+              <div class="music-track-meta">
+                <span class="music-overline">NOW PLAYING</span>
+                <strong id="playlistNowTitle">November Angel (Short Version)</strong>
+                <small id="playlistNowSubtitle">A song just for you 💗</small>
+              </div>
+            </div>
+            <div class="music-timeline-row">
+              <span id="playlistCurrentTime">0:00</span>
+              <input id="playlistTimeline" type="range" min="0" max="1000" value="0" aria-label="Song timeline">
+              <span id="playlistDuration">0:00</span>
+            </div>
+            <div class="music-controls">
+              <button type="button" id="playlistPrev" aria-label="Previous song">|◀</button>
+              <button type="button" id="playlistPlayPause" class="music-main-control" aria-label="Play or pause">▶</button>
+              <button type="button" id="playlistNext" aria-label="Next song">▶|</button>
+              <label class="music-volume">🔊 <input id="playlistVolume" type="range" min="0" max="1" step="0.01" value="0.32" aria-label="Volume"></label>
+              <a id="playlistDownload" class="music-download" href="assets/November-Angel-Short.mp3" download>↓ Download</a>
+            </div>
+          </div>
+          <div class="playlist-heading"><span>OUR LITTLE PLAYLIST</span><span id="playlistTrackCount">03 TRACKS</span></div>
+          <div class="playlist-list" id="playlistList">
+            <button class="playlist-track is-active" type="button" data-track="0"><span class="playlist-number">01</span><span class="playlist-track-icon"><img src="assets/covers/November-Angel-Short.jpg" alt=""></span><span class="playlist-track-copy"><strong>November Angel (Short Version)</strong><small>Background song · continues from where it is</small></span><span class="playlist-playing-mark">♫</span></button>
+            <button class="playlist-track" type="button" data-track="1"><span class="playlist-number">02</span><span class="playlist-track-icon"><img src="assets/covers/November-Angel.jpg" alt=""></span><span class="playlist-track-copy"><strong>November Angel</strong><small>A little more magic</small></span><span class="playlist-playing-mark">♫</span></button>
+            <button class="playlist-track" type="button" data-track="2"><span class="playlist-number">03</span><span class="playlist-track-icon"><img src="assets/covers/Birthday-Bujji.jpg" alt=""></span><span class="playlist-track-copy"><strong>Birthday Bujji</strong><small>Made for your special day</small></span><span class="playlist-playing-mark">♫</span></button>
+          </div>
+          <p class="playlist-help">The music keeps playing while you read or browse. Choose a song whenever you like. 💜</p>
+        </section>
+  </div>
+</section>
+
+
+
+
+
+<script src="script.js" defer></script>
+
+</body>
+</html>
